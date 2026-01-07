@@ -4,7 +4,7 @@ export { default as Button } from './Button';
 export { default as StickyCallWidgets } from './StickyCallWidgets';
 export { default as QuoteModal } from './QuoteModal';
 export { default as TestimonialCarousel } from './TestimonialCarousel';
-export { default as PricingTable } from './PricingTable';
+export { default as PricingTable, PricingPreview } from './PricingTable';
 export { default as FAQAccordion } from './FAQAccordion';
 export { default as ScrollReveal } from './ScrollReveal';
 export { default as AnimatedCounter } from './AnimatedCounter';

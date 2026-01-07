@@ -27,7 +27,7 @@ import {
 import {
   ScrollReveal,
   TestimonialCarousel,
-  PricingTable,
+  PricingPreview,
   FAQAccordion,
   AnimatedCounter,
   QuoteModal,
@@ -430,16 +430,17 @@ export default function HomePage() {
                 Transparent Pricing
               </span>
               <h2 className="font-display text-3xl md:text-4xl font-bold text-navy-950 mb-4">
-                Affordable Dispatch Services
+                Affordable Nationwide Dispatching
               </h2>
               <p className="text-surface-600 text-lg">
-                Choose the plan that works best for your business. No hidden fees, no surprises.
+                Choose the plan that works best for your business. Specialized in Box Trucks, 
+                Dry Vans, Flatbeds, and Reefers. No hidden fees, no surprises.
               </p>
             </div>
           </ScrollReveal>
 
           <ScrollReveal>
-            <PricingTable />
+            <PricingPreview />
           </ScrollReveal>
 
           <ScrollReveal className="text-center mt-12">

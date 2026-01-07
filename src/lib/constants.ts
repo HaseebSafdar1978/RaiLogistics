@@ -301,6 +301,29 @@ export const HOW_IT_WORKS = [
 ] as const;
 
 export const PRICING_PLANS = {
+  weekly: {
+    name: 'Weekly Flat Rate',
+    subtitle: 'Simple Weekly Billing',
+    description: 'Predictable weekly dispatch fee per truck. No percentage cuts from your loads.',
+    rates: [
+      { equipment: 'Box Truck', rate: '$250', period: '/week' },
+      { equipment: 'Dry Van', rate: '$300', period: '/week' },
+      { equipment: 'Flatbed', rate: '$300', period: '/week' },
+      { equipment: 'Reefer', rate: '$350', period: '/week' },
+    ],
+    features: [
+      'Load sourcing & booking',
+      'Rate negotiation',
+      'Broker communication',
+      'Dispatch coordination',
+      'Paperwork support (rate confirmations, email follow-ups)',
+      'Lane strategy suggestions',
+      'Dedicated dispatcher support',
+    ],
+    note: 'Weekly rate is billed per truck. Cancel anytime with notice (details in Terms).',
+    cta: 'Call Now',
+    ctaSecondary: 'Get Started',
+  },
   contract: {
     name: 'Contract Plan',
     subtitle: '1-Month Dispatch Contract',
@@ -335,6 +358,35 @@ export const PRICING_PLANS = {
       'Same dedicated support',
       'Transparent billing',
     ],
+    note: 'Percentage depends on equipment type.',
     cta: 'Start Today',
   },
 } as const;
+
+export const WEEKLY_PLAN_FAQS = [
+  {
+    id: 101,
+    question: 'When do you bill for the weekly plan?',
+    answer: 'We bill weekly, typically at the beginning of each dispatch week. You can choose your preferred billing day during setup. Payment is due before dispatch services begin for that week.',
+  },
+  {
+    id: 102,
+    question: 'Is the weekly rate per truck?',
+    answer: 'Yes, the weekly flat rate is billed per truck. If you have multiple trucks, each truck is billed separately at the rate for its equipment type.',
+  },
+  {
+    id: 103,
+    question: 'Can I switch plans later?',
+    answer: 'Absolutely! You can switch between our Weekly Flat Rate, Contract, or Percentage plans at any time. Just give us notice and we will adjust your billing accordingly starting the next billing period.',
+  },
+  {
+    id: 104,
+    question: 'Do you handle all states?',
+    answer: 'Yes, we provide dispatch services across all 48 contiguous states. Whether you run regional routes or coast-to-coast lanes, we have got you covered nationwide.',
+  },
+  {
+    id: 105,
+    question: 'How quickly can you start dispatching my truck?',
+    answer: 'Most carriers are fully set up and dispatched within 24-48 hours. We just need your MC authority info, insurance details, and preferred lanes. Call us and we can often have you on a load the same week.',
+  },
+] as const;

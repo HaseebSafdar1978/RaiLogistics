@@ -1,16 +1,17 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { Phone, Check, X, HelpCircle, Shield, DollarSign, Users } from 'lucide-react';
+import { Phone, Check, X, Shield, DollarSign, Users, Calendar, Sparkles, Percent, ArrowRight } from 'lucide-react';
 import { ScrollReveal, PricingTable, FAQAccordion } from '@/components';
-import { BUSINESS } from '@/lib/constants';
+import { BUSINESS, PRICING_PLANS, WEEKLY_PLAN_FAQS } from '@/lib/constants';
+import Link from 'next/link';
 
 const pricingFaqs = [
   {
     id: 1,
-    question: 'What is the difference between contract and percentage plans?',
+    question: 'What is the difference between weekly, contract, and percentage plans?',
     answer:
-      'The contract plan is a fixed monthly fee regardless of how many loads you run. The percentage plan charges a small percentage (4-6%) of your gross load pay, so you only pay when you are earning. Many drivers prefer the percentage plan because there is no upfront cost.',
+      'The Weekly Flat Rate plan charges a simple weekly fee per truck regardless of how many loads you run. The Contract plan is a fixed monthly fee with all services included. The Percentage plan charges 4-6% of your gross load pay, so you only pay when you are earning. Many drivers prefer the weekly plan for its simplicity and predictability.',
   },
   {
     id: 2,
@@ -20,21 +21,21 @@ const pricingFaqs = [
   },
   {
     id: 3,
-    question: 'How does billing work for the percentage plan?',
+    question: 'How does billing work for the weekly plan?',
     answer:
-      'We calculate your commission based on the gross load rate on the rate confirmation. Billing is typically weekly or bi-weekly, depending on your preference. We can work with your factoring company for seamless payments.',
+      'We bill weekly at the beginning of each dispatch week. You choose your preferred billing day during setup. Payment is due before dispatch services begin for that week. We accept most payment methods.',
   },
   {
     id: 4,
     question: 'Can I switch between plans?',
     answer:
-      'Yes! You can switch between our contract and percentage plans. Just give us notice and we will adjust your billing accordingly.',
+      'Yes! You can switch between our Weekly Flat Rate, Contract, or Percentage plans at any time. Just give us notice and we will adjust your billing accordingly starting the next billing period.',
   },
   {
     id: 5,
     question: 'Is there a minimum commitment?',
     answer:
-      'Our contract plan is month-to-month with no long-term commitment required. You can cancel with proper notice. We believe in earning your business, not trapping you in contracts.',
+      'Our weekly and contract plans have no long-term commitment required. You can cancel with proper notice as detailed in our Terms of Service. We believe in earning your business, not trapping you in contracts.',
   },
 ];
 
@@ -51,11 +52,11 @@ export default function PricingPageClient() {
                 Transparent Pricing
               </span>
               <h1 className="font-display text-4xl md:text-5xl font-bold text-navy-950 mb-6">
-                Affordable Dispatch for Every Driver
+                Affordable Nationwide Dispatching
               </h1>
               <p className="text-lg text-navy-700 mb-8">
-                No hidden fees. No surprises. Choose the plan that works best for your business
-                and start earning more today.
+                Specialized in Box Trucks, Dry Vans, Flatbeds, and Reefers. Choose the plan 
+                that works best for your business. No hidden fees, no surprises.
               </p>
               <motion.a
                 href={BUSINESS.phoneHref}
@@ -79,7 +80,7 @@ export default function PricingPageClient() {
               {
                 icon: DollarSign,
                 title: 'Competitive Rates',
-                description: 'Starting at just 4% - some of the lowest in the industry.',
+                description: 'Weekly rates from $250/week or percentage from 4%.',
               },
               {
                 icon: Shield,
@@ -108,17 +109,41 @@ export default function PricingPageClient() {
         </div>
       </section>
 
-      {/* Pricing Tables */}
+      {/* Pricing Tables with Toggle */}
       <section className="section-padding bg-surface-50">
         <div className="container-custom">
           <ScrollReveal>
-            <PricingTable />
+            <PricingTable showToggle={true} defaultPlan="weekly" />
+          </ScrollReveal>
+        </div>
+      </section>
+
+      {/* Weekly Plan FAQ */}
+      <section className="section-padding bg-white">
+        <div className="container-custom">
+          <ScrollReveal>
+            <div className="text-center max-w-2xl mx-auto mb-12">
+              <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-primary-100 text-primary-700 text-sm font-semibold rounded-full mb-4">
+                <Calendar className="w-4 h-4" />
+                Weekly Plan FAQ
+              </div>
+              <h2 className="font-display text-3xl md:text-4xl font-bold text-navy-950 mb-4">
+                Questions About Weekly Billing
+              </h2>
+              <p className="text-surface-600 text-lg">
+                Common questions about our most popular pricing option.
+              </p>
+            </div>
+          </ScrollReveal>
+
+          <ScrollReveal>
+            <FAQAccordion faqs={WEEKLY_PLAN_FAQS as any} />
           </ScrollReveal>
         </div>
       </section>
 
       {/* Detailed Comparison */}
-      <section className="section-padding bg-white">
+      <section className="section-padding bg-surface-50">
         <div className="container-custom">
           <ScrollReveal>
             <div className="text-center max-w-2xl mx-auto mb-12">
@@ -132,41 +157,60 @@ export default function PricingPageClient() {
           </ScrollReveal>
 
           <ScrollReveal>
-            <div className="max-w-4xl mx-auto">
-              <div className="bg-white rounded-2xl shadow-soft border border-surface-100 overflow-hidden">
-                <table className="w-full">
+            <div className="max-w-5xl mx-auto">
+              <div className="bg-white rounded-2xl shadow-soft border border-surface-100 overflow-hidden overflow-x-auto">
+                <table className="w-full min-w-[600px]">
                   <thead>
                     <tr className="bg-surface-50">
                       <th className="px-6 py-4 text-left font-semibold text-navy-900">
                         Feature
                       </th>
-                      <th className="px-6 py-4 text-center font-semibold text-navy-900">
-                        Contract Plan
-                      </th>
                       <th className="px-6 py-4 text-center font-semibold text-navy-900 bg-primary-50">
-                        Percentage Plan
+                        <div className="flex items-center justify-center gap-2">
+                          <Calendar className="w-4 h-4 text-primary-600" />
+                          Weekly Plan
+                        </div>
+                      </th>
+                      <th className="px-6 py-4 text-center font-semibold text-navy-900">
+                        <div className="flex items-center justify-center gap-2">
+                          <Sparkles className="w-4 h-4 text-navy-600" />
+                          Contract Plan
+                        </div>
+                      </th>
+                      <th className="px-6 py-4 text-center font-semibold text-navy-900">
+                        <div className="flex items-center justify-center gap-2">
+                          <Percent className="w-4 h-4 text-accent-600" />
+                          Percentage Plan
+                        </div>
                       </th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-surface-100">
                     {[
-                      { feature: 'Dedicated Dispatcher', contract: true, percentage: true },
-                      { feature: 'Rate Negotiation', contract: true, percentage: true },
-                      { feature: 'Load Booking', contract: true, percentage: true },
-                      { feature: 'Broker Communication', contract: true, percentage: true },
-                      { feature: 'Paperwork Support', contract: true, percentage: true },
-                      { feature: 'Scheduling & Follow-ups', contract: true, percentage: true },
-                      { feature: 'Lane Strategy', contract: true, percentage: true },
-                      { feature: 'Detention Requests', contract: true, percentage: true },
-                      { feature: 'Weekly Performance Reviews', contract: true, percentage: true },
-                      { feature: 'No Upfront Cost', contract: false, percentage: true },
-                      { feature: 'Pay Only When Earning', contract: false, percentage: true },
-                      { feature: 'Fixed Predictable Cost', contract: true, percentage: false },
-                      { feature: 'Best for High Volume', contract: true, percentage: false },
-                      { feature: 'Best for Starting Out', contract: false, percentage: true },
+                      { feature: 'Dedicated Dispatcher', weekly: true, contract: true, percentage: true },
+                      { feature: 'Load Sourcing & Booking', weekly: true, contract: true, percentage: true },
+                      { feature: 'Rate Negotiation', weekly: true, contract: true, percentage: true },
+                      { feature: 'Broker Communication', weekly: true, contract: true, percentage: true },
+                      { feature: 'Paperwork Support', weekly: true, contract: true, percentage: true },
+                      { feature: 'Lane Strategy', weekly: true, contract: true, percentage: true },
+                      { feature: 'Dispatch Coordination', weekly: true, contract: true, percentage: true },
+                      { feature: 'Detention Requests', weekly: true, contract: true, percentage: true },
+                      { feature: 'Predictable Billing', weekly: true, contract: true, percentage: false },
+                      { feature: 'No Percentage Cuts', weekly: true, contract: true, percentage: false },
+                      { feature: 'Pay Only When Earning', weekly: false, contract: false, percentage: true },
+                      { feature: 'Best for High Volume', weekly: true, contract: true, percentage: false },
+                      { feature: 'Best for Variable Volume', weekly: false, contract: false, percentage: true },
+                      { feature: 'Weekly Performance Reviews', weekly: true, contract: true, percentage: true },
                     ].map((row, idx) => (
                       <tr key={idx} className="hover:bg-surface-50 transition-colors">
                         <td className="px-6 py-4 text-navy-700">{row.feature}</td>
+                        <td className="px-6 py-4 text-center bg-primary-50/30">
+                          {row.weekly ? (
+                            <Check className="w-5 h-5 text-green-500 mx-auto" />
+                          ) : (
+                            <X className="w-5 h-5 text-surface-300 mx-auto" />
+                          )}
+                        </td>
                         <td className="px-6 py-4 text-center">
                           {row.contract ? (
                             <Check className="w-5 h-5 text-green-500 mx-auto" />
@@ -174,7 +218,7 @@ export default function PricingPageClient() {
                             <X className="w-5 h-5 text-surface-300 mx-auto" />
                           )}
                         </td>
-                        <td className="px-6 py-4 text-center bg-primary-50/50">
+                        <td className="px-6 py-4 text-center">
                           {row.percentage ? (
                             <Check className="w-5 h-5 text-green-500 mx-auto" />
                           ) : (
@@ -192,25 +236,25 @@ export default function PricingPageClient() {
       </section>
 
       {/* Equipment Rates */}
-      <section className="section-padding bg-surface-50">
+      <section className="section-padding bg-white">
         <div className="container-custom">
           <ScrollReveal>
             <div className="text-center max-w-2xl mx-auto mb-12">
               <h2 className="font-display text-3xl md:text-4xl font-bold text-navy-950 mb-4">
-                Percentage Rates by Equipment
+                Rates by Equipment Type
               </h2>
               <p className="text-surface-600 text-lg">
-                Our percentage plan rates vary based on equipment type.
+                Our rates vary based on equipment type across all plans.
               </p>
             </div>
           </ScrollReveal>
 
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-4xl mx-auto">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-5xl mx-auto">
             {[
-              { name: 'Box Truck', rate: '6%', color: 'from-blue-500 to-blue-600' },
-              { name: 'Dry Van', rate: '5%', color: 'from-primary-500 to-primary-600' },
-              { name: 'Flatbed', rate: '5%', color: 'from-accent-500 to-accent-600' },
-              { name: 'Reefer', rate: '4%', color: 'from-green-500 to-green-600' },
+              { name: 'Box Truck', weekly: '$250/week', percentage: '6%', color: 'from-blue-500 to-blue-600' },
+              { name: 'Dry Van', weekly: '$300/week', percentage: '5%', color: 'from-primary-500 to-primary-600' },
+              { name: 'Flatbed', weekly: '$300/week', percentage: '5%', color: 'from-accent-500 to-accent-600' },
+              { name: 'Reefer', weekly: '$350/week', percentage: '4%', color: 'from-green-500 to-green-600' },
             ].map((item, idx) => (
               <ScrollReveal key={item.name} delay={idx * 0.1}>
                 <motion.div
@@ -220,10 +264,19 @@ export default function PricingPageClient() {
                   <div
                     className={`w-16 h-16 bg-gradient-to-br ${item.color} rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-soft`}
                   >
-                    <span className="text-white font-bold text-xl">{item.rate}</span>
+                    <span className="text-white font-bold text-lg">{item.name.charAt(0)}</span>
                   </div>
-                  <h3 className="font-display text-xl font-bold text-navy-950">{item.name}</h3>
-                  <p className="text-surface-500 text-sm mt-1">of gross load rate</p>
+                  <h3 className="font-display text-xl font-bold text-navy-950 mb-3">{item.name}</h3>
+                  <div className="space-y-2">
+                    <div className="bg-primary-50 rounded-lg px-3 py-2">
+                      <p className="text-xs text-primary-600 font-medium">Weekly Rate</p>
+                      <p className="font-display font-bold text-primary-700">{item.weekly}</p>
+                    </div>
+                    <div className="bg-surface-50 rounded-lg px-3 py-2">
+                      <p className="text-xs text-surface-500 font-medium">Percentage Rate</p>
+                      <p className="font-display font-bold text-navy-700">{item.percentage}</p>
+                    </div>
+                  </div>
                 </motion.div>
               </ScrollReveal>
             ))}
@@ -231,19 +284,19 @@ export default function PricingPageClient() {
 
           <ScrollReveal className="text-center mt-8">
             <p className="text-surface-500 text-sm">
-              Rates are calculated on the gross rate confirmation amount.
+              Weekly rates are billed per truck. Percentage rates are calculated on the gross rate confirmation amount.
             </p>
           </ScrollReveal>
         </div>
       </section>
 
-      {/* Pricing FAQ */}
-      <section className="section-padding bg-white">
+      {/* General Pricing FAQ */}
+      <section className="section-padding bg-surface-50">
         <div className="container-custom">
           <ScrollReveal>
             <div className="text-center max-w-2xl mx-auto mb-12">
               <h2 className="font-display text-3xl md:text-4xl font-bold text-navy-950 mb-4">
-                Pricing Questions
+                General Pricing Questions
               </h2>
               <p className="text-surface-600 text-lg">
                 Common questions about our pricing and billing.
@@ -268,15 +321,24 @@ export default function PricingPageClient() {
               Call now to discuss which plan is right for your business.
               No obligation, no pressure.
             </p>
-            <motion.a
-              href={BUSINESS.phoneHref}
-              whileHover={{ scale: 1.03 }}
-              whileTap={{ scale: 0.98 }}
-              className="inline-flex items-center gap-3 px-8 py-4 bg-white text-primary-700 font-bold text-lg rounded-2xl shadow-strong hover:shadow-glow-primary transition-all"
-            >
-              <Phone className="w-6 h-6" />
-              {BUSINESS.phone}
-            </motion.a>
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+              <motion.a
+                href={BUSINESS.phoneHref}
+                whileHover={{ scale: 1.03 }}
+                whileTap={{ scale: 0.98 }}
+                className="inline-flex items-center gap-3 px-8 py-4 bg-white text-primary-700 font-bold text-lg rounded-2xl shadow-strong hover:shadow-glow-primary transition-all"
+              >
+                <Phone className="w-6 h-6" />
+                {BUSINESS.phone}
+              </motion.a>
+              <Link
+                href="/contact"
+                className="inline-flex items-center gap-2 px-6 py-4 bg-white/10 backdrop-blur text-white font-semibold rounded-2xl border border-white/20 hover:bg-white/20 transition-all"
+              >
+                Contact Us
+                <ArrowRight className="w-5 h-5" />
+              </Link>
+            </div>
           </ScrollReveal>
         </div>
       </section>
