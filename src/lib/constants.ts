@@ -3,8 +3,8 @@ export const BUSINESS = {
   parentCompany: 'Rai Technologies LLC',
   phone: '(307) 303-9797',
   phoneHref: 'tel:+13073039797',
-  email: 'support@railogistics.com',
-  emailHref: 'mailto:support@railogistics.com',
+  email: 'sam@railogistics.us',
+  emailHref: 'mailto:sam@railogistics.us',
   address: {
     street: '312 W 2ND ST STE 5083',
     city: 'Casper',

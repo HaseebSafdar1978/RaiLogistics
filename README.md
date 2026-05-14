@@ -162,5 +162,5 @@ Private - All rights reserved.
 ## Support
 
 For questions or support, contact:
-- Email: support@railogistics.com
+- Email: sam@railogistics.us
 - Phone: (307) 303-9797

@@ -24,7 +24,7 @@ export const metadata: Metadata = {
   authors: [{ name: BUSINESS.name }],
   creator: BUSINESS.parentCompany,
   publisher: BUSINESS.name,
-  metadataBase: new URL('https://railogistics.com'),
+  metadataBase: new URL('https://railogistics.us'),
   icons: {
     icon: [
       { url: '/favicon.ico', sizes: 'any' },
