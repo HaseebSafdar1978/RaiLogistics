@@ -9,3 +9,4 @@ export { default as FAQAccordion } from './FAQAccordion';
 export { default as ScrollReveal } from './ScrollReveal';
 export { default as AnimatedCounter } from './AnimatedCounter';
 export { default as ServiceIcon } from './ServiceIcon';
+export { default as LiveLoadTicker } from './LiveLoadTicker';

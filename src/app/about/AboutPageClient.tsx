@@ -134,7 +134,7 @@ export default function AboutPageClient() {
                 </h2>
                 <p className="text-navy-700 text-lg leading-relaxed">
                   To be the most trusted and driver-focused dispatch service in America. 
-                  We envision a future where every owner-operator has access to premium 
+                  We envision a future where every owner-operator has access to professional 
                   dispatch support at an affordable price, with complete transparency 
                   and no hidden costs.
                 </p>

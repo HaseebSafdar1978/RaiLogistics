@@ -5,7 +5,7 @@ import './globals.css';
 
 export const metadata: Metadata = {
   title: {
-    default: `${BUSINESS.name} | Premium Truck Dispatch Services`,
+    default: `${BUSINESS.name} | Professional Truck Dispatch Services`,
     template: `%s | ${BUSINESS.name}`,
   },
   description: BUSINESS.description,
@@ -44,12 +44,12 @@ export const metadata: Metadata = {
     type: 'website',
     locale: 'en_US',
     siteName: BUSINESS.name,
-    title: `${BUSINESS.name} | Premium Truck Dispatch Services`,
+    title: `${BUSINESS.name} | Professional Truck Dispatch Services`,
     description: BUSINESS.description,
   },
   twitter: {
     card: 'summary_large_image',
-    title: `${BUSINESS.name} | Premium Truck Dispatch Services`,
+    title: `${BUSINESS.name} | Professional Truck Dispatch Services`,
     description: BUSINESS.description,
   },
   robots: {
@@ -187,8 +187,8 @@ export default function RootLayout({
         <main className="pt-20">{children}</main>
         <Footer />
         <StickyCallWidgets />
-        {/* Bottom padding for mobile sticky bar */}
-        <div className="h-16 md:hidden" />
+        {/* Spacer for mobile sticky bar (14 = bar height; +safe-area for notched iOS) */}
+        <div className="h-14 mb-safe md:hidden" aria-hidden="true" />
       </body>
     </html>
   );

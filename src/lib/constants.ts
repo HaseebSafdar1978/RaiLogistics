@@ -22,7 +22,7 @@ export const BUSINESS = {
     note: 'We answer fast, even after hours.',
   },
   serviceArea: 'All over the United States',
-  tagline: 'Premium Truck Dispatching Services',
+  tagline: 'Professional Truck Dispatching Services',
   description: 'Professional truck dispatch services for Box Trucks, Dry Vans, Flatbeds, and Reefers. Nationwide coverage with dedicated dispatchers.',
 } as const;
 
@@ -49,7 +49,7 @@ export const EQUIPMENT_TYPES = [
     id: 'dry-van',
     name: 'Dry Vans',
     percentage: '5%',
-    description: 'Expert dispatch services for dry van carriers with access to premium freight.',
+    description: 'Expert dispatch services for dry van carriers with access to high-paying freight.',
     benefits: ['Coast-to-coast lanes', 'Consistent freight', 'Rate negotiation expertise'],
   },
   {
@@ -57,14 +57,14 @@ export const EQUIPMENT_TYPES = [
     name: 'Flatbeds',
     percentage: '5%',
     description: 'Dedicated dispatching for flatbed operators with specialized load matching.',
-    benefits: ['Specialized cargo support', 'Premium rates', 'Equipment-specific matching'],
+    benefits: ['Specialized cargo support', 'High-paying rates', 'Equipment-specific matching'],
   },
   {
     id: 'reefer',
     name: 'Reefers',
     percentage: '4%',
     description: 'Temperature-controlled freight dispatch with time-sensitive load expertise.',
-    benefits: ['Temperature-controlled loads', 'Premium produce lanes', 'Time-critical shipments'],
+    benefits: ['Temperature-controlled loads', 'Top produce lanes', 'Time-critical shipments'],
   },
 ] as const;
 
@@ -297,7 +297,7 @@ export const FAQS = [
   {
     id: 13,
     question: 'What makes Rai Logistics different from other dispatch services?',
-    answer: 'We combine affordable pricing with premium service. Our dispatchers are experienced professionals, not call center agents. We treat every driver like a partner, not a number.',
+    answer: 'We combine affordable pricing with professional service. Our dispatchers are experienced professionals, not call center agents. We treat every driver like a partner, not a number.',
   },
   {
     id: 14,

@@ -48,11 +48,11 @@ const equipmentData = [
     icon: Container,
     percentage: '5%',
     heroDescription:
-      'Expert dispatch services for dry van carriers. Access premium freight across the country with rates negotiated by experienced professionals.',
+      'Expert dispatch services for dry van carriers. Access high-paying freight across the country with rates negotiated by experienced professionals.',
     features: [
       'Coast-to-coast lane access',
       'Consistent freight availability',
-      'Premium rate negotiation',
+      'Top rate negotiation',
       'Drop and hook opportunities',
       'Dedicated lane development',
       'Team driver support',
@@ -77,7 +77,7 @@ const equipmentData = [
     features: [
       'Specialized cargo matching',
       'Tarping and securement consideration',
-      'Premium rate opportunities',
+      'High-paying rate opportunities',
       'Construction and industrial loads',
       'Oversize/overweight coordination',
       'Equipment-specific expertise',
@@ -103,7 +103,7 @@ const equipmentData = [
       'Temperature-controlled load matching',
       'Produce and perishable expertise',
       'Time-critical delivery coordination',
-      'Premium reefer rates',
+      'Top reefer rates',
       'Seasonal lane optimization',
       'Multi-stop efficiency',
     ],
