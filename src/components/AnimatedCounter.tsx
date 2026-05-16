@@ -11,6 +11,18 @@ interface AnimatedCounterProps {
   label: string;
 }
 
+/**
+ * AnimatedCounter — counts up from 0 to `value` when scrolled into view.
+ *
+ * KEY FIX: previously, the initial state was 0, which meant:
+ *  - Server-rendered HTML showed "0" (bad for SEO, social previews, no-JS users)
+ *  - Any user who scrolled past the section before hydration completed
+ *    saw "0" frozen on screen
+ *
+ * Solution: track a `hasMounted` flag and only drop to 0 to animate up after
+ * the client mounts. Before that, render the final value directly. This makes
+ * SSR correct and handles fast page-loads where the section never enters view.
+ */
 export default function AnimatedCounter({
   value,
   prefix = '',
@@ -18,31 +30,41 @@ export default function AnimatedCounter({
   duration = 2,
   label,
 }: AnimatedCounterProps) {
-  const [displayValue, setDisplayValue] = useState(0);
-  const ref = useRef<HTMLDivElement>(null);
-  const isInView = useInView(ref, { once: true, margin: '-100px' });
-  const numericValue = typeof value === 'string' ? parseInt(value.replace(/\D/g, ''), 10) : value;
+  const numericValue =
+    typeof value === 'string' ? parseInt(value.replace(/\D/g, ''), 10) : value;
 
+  const [hasMounted, setHasMounted] = useState(false);
+  const [displayValue, setDisplayValue] = useState(numericValue); // start at FINAL value
+  const ref = useRef<HTMLDivElement>(null);
+  const isInView = useInView(ref, { once: true, margin: '0px' });
+
+  // Once mounted on the client, drop to 0 so we can animate up.
   useEffect(() => {
-    if (!isInView) return;
+    setHasMounted(true);
+    setDisplayValue(0);
+  }, []);
+
+  // Animate to final value when in view (after mount)
+  useEffect(() => {
+    if (!hasMounted || !isInView) return;
 
     let startTime: number;
+    let rafId: number;
     const animate = (timestamp: number) => {
       if (!startTime) startTime = timestamp;
       const progress = Math.min((timestamp - startTime) / (duration * 1000), 1);
-      
-      // Easing function for smoother animation
       const easeOutQuart = 1 - Math.pow(1 - progress, 4);
-      
       setDisplayValue(Math.floor(easeOutQuart * numericValue));
-
       if (progress < 1) {
-        requestAnimationFrame(animate);
+        rafId = requestAnimationFrame(animate);
+      } else {
+        setDisplayValue(numericValue); // ensure exact final value
       }
     };
 
-    requestAnimationFrame(animate);
-  }, [isInView, numericValue, duration]);
+    rafId = requestAnimationFrame(animate);
+    return () => cancelAnimationFrame(rafId);
+  }, [hasMounted, isInView, numericValue, duration]);
 
   return (
     <motion.div

@@ -7,6 +7,7 @@ import {
   Phone,
   ArrowRight,
   CheckCircle,
+  XCircle,
   Shield,
   Clock,
   DollarSign,
@@ -19,10 +20,14 @@ import {
   Box,
   Package,
   MessageSquare,
+  MessageCircle,
   Route,
   FileText,
   Calendar,
   Star,
+  BadgeCheck,
+  Sparkles,
+  TrendingUp,
 } from 'lucide-react';
 import {
   ScrollReveal,
@@ -39,6 +44,10 @@ import {
   HOW_IT_WORKS,
   STATS,
   FAQS,
+  SCOPE_CLARITY,
+  RISK_REVERSAL,
+  DISPATCHER,
+  COMPARISON_ROWS,
 } from '@/lib/constants';
 
 const iconComponents: Record<string, React.ElementType> = {
@@ -120,18 +129,29 @@ export default function HomePage() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.3 }}
-                className="text-lg sm:text-xl text-navy-700 mb-8 max-w-xl"
+                className="text-lg sm:text-xl text-navy-700 mb-6 max-w-xl"
               >
-                We handle rate negotiation, load booking, and paperwork—so you can focus on 
+                We handle rate negotiation, load booking, and paperwork—so you can focus on
                 what you do best: driving. Get dispatched within 24-48 hours.
               </motion.p>
 
-              {/* CTAs */}
+              {/* Offer pill — free setup risk reversal directly under the hero copy */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.35 }}
+                className="inline-flex items-center gap-2 px-4 py-2 bg-green-50 text-green-800 rounded-full text-sm font-semibold mb-6 border border-green-200"
+              >
+                <Sparkles className="w-4 h-4" />
+                Free setup · No long contracts · Cancel anytime
+              </motion.div>
+
+              {/* CTAs — Call (primary) + Text (secondary) + Get Quote */}
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.4 }}
-                className="flex flex-col sm:flex-row gap-4 mb-8"
+                className="flex flex-col sm:flex-row gap-3 mb-8"
               >
                 <motion.a
                   href={BUSINESS.phoneHref}
@@ -140,7 +160,16 @@ export default function HomePage() {
                   className="btn-call text-center"
                 >
                   <Phone className="w-6 h-6" />
-                  Call Now: {BUSINESS.phone}
+                  Call: {BUSINESS.phone}
+                </motion.a>
+                <motion.a
+                  href={BUSINESS.smsHref}
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  className="inline-flex items-center justify-center gap-2 px-6 py-4 bg-white text-navy-900 font-semibold rounded-2xl shadow-soft hover:shadow-medium border border-surface-200 transition-all"
+                >
+                  <MessageCircle className="w-5 h-5 text-primary-600" />
+                  Text Us
                 </motion.a>
                 <motion.button
                   onClick={() => setIsQuoteModalOpen(true)}
@@ -148,25 +177,29 @@ export default function HomePage() {
                   whileTap={{ scale: 0.98 }}
                   className="btn-secondary"
                 >
-                  Get a Quote
+                  Get Quote
                   <ArrowRight className="w-5 h-5" />
                 </motion.button>
               </motion.div>
 
-              {/* Quick Stats */}
+              {/* Quick trust strip — softened: "owner-operators" instead of "500+ Drivers" */}
               <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.5 }}
-                className="flex items-center gap-6 text-sm text-surface-600"
+                className="flex flex-wrap items-center gap-x-6 gap-y-2 text-sm text-surface-600"
               >
                 <div className="flex items-center gap-2">
                   <Star className="w-5 h-5 text-amber-400 fill-amber-400" />
-                  <span>4.9/5 Driver Rating</span>
+                  <span>Highly rated by drivers</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <Shield className="w-5 h-5 text-green-500" />
-                  <span>Trusted by 500+ Drivers</span>
+                  <span>Trusted by owner-operators</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <BadgeCheck className="w-5 h-5 text-primary-500" />
+                  <span>{BUSINESS.parentCompany}</span>
                 </div>
               </motion.div>
             </div>
@@ -370,6 +403,240 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* ============================================================ */}
+      {/* MEET YOUR DISPATCHER — humanizes the brand. Truckers in this  */}
+      {/* industry are sick of faceless call centers, so putting a real */}
+      {/* person front-and-center is a key trust differentiator.        */}
+      {/* ============================================================ */}
+      <section className="section-padding bg-gradient-to-br from-surface-50 to-white">
+        <div className="container-custom">
+          <div className="grid lg:grid-cols-5 gap-12 items-center">
+            {/* Avatar / Photo card */}
+            <ScrollReveal className="lg:col-span-2">
+              <div className="relative max-w-sm mx-auto lg:mx-0">
+                {/* Decorative gradient blob */}
+                <div className="absolute -inset-4 bg-gradient-to-br from-primary-200 to-accent-200 rounded-3xl blur-2xl opacity-50" />
+                <div className="relative bg-white rounded-3xl shadow-strong p-8 border border-surface-100">
+                  {/* Photo placeholder — initial avatar.
+                      Replace with <Image src="/team/sam.jpg" ... /> when a real photo is available. */}
+                  <div className="w-32 h-32 mx-auto mb-5 rounded-full bg-gradient-to-br from-primary-500 via-primary-600 to-primary-700 flex items-center justify-center shadow-glow-primary">
+                    <span className="font-display text-5xl font-bold text-white">
+                      {DISPATCHER.name.charAt(0)}
+                    </span>
+                  </div>
+                  <div className="text-center">
+                    <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-green-50 text-green-700 rounded-full text-xs font-semibold mb-3">
+                      <BadgeCheck className="w-3.5 h-3.5" />
+                      Talk to me directly
+                    </div>
+                    <h3 className="font-display text-2xl font-bold text-navy-950 mb-1">
+                      {DISPATCHER.name}
+                    </h3>
+                    <p className="text-surface-500 text-sm mb-5">{DISPATCHER.title}</p>
+                    <div className="flex flex-col sm:flex-row gap-2 justify-center">
+                      <a
+                        href={BUSINESS.phoneHref}
+                        className="inline-flex items-center justify-center gap-1.5 px-4 py-2 bg-gradient-to-r from-primary-600 to-primary-700 text-white text-sm font-semibold rounded-lg hover:shadow-glow-primary transition-all"
+                      >
+                        <Phone className="w-4 h-4" />
+                        Call
+                      </a>
+                      <a
+                        href={BUSINESS.smsHref}
+                        className="inline-flex items-center justify-center gap-1.5 px-4 py-2 bg-surface-100 text-navy-800 text-sm font-semibold rounded-lg hover:bg-surface-200 transition-colors"
+                      >
+                        <MessageCircle className="w-4 h-4" />
+                        Text
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </ScrollReveal>
+
+            {/* Story + commitments */}
+            <ScrollReveal className="lg:col-span-3" delay={0.15}>
+              <span className="inline-block px-4 py-1.5 bg-primary-100 text-primary-700 text-sm font-semibold rounded-full mb-4">
+                Meet Your Dispatcher
+              </span>
+              <h2 className="font-display text-3xl md:text-4xl font-bold text-navy-950 mb-5 leading-tight">
+                You will not get a call-center rep.{' '}
+                <span className="gradient-text">You will get me.</span>
+              </h2>
+              <p className="text-navy-700 text-lg mb-8 leading-relaxed">
+                {DISPATCHER.intro}
+              </p>
+
+              <div className="grid sm:grid-cols-2 gap-3">
+                {DISPATCHER.commitments.map((commitment, idx) => (
+                  <motion.div
+                    key={commitment}
+                    initial={{ opacity: 0, x: -10 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: idx * 0.08 }}
+                    className="flex items-start gap-3 p-3 bg-white rounded-xl border border-surface-100"
+                  >
+                    <div className="w-6 h-6 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                      <CheckCircle className="w-4 h-4 text-green-600" />
+                    </div>
+                    <span className="text-navy-800 text-sm font-medium">{commitment}</span>
+                  </motion.div>
+                ))}
+              </div>
+            </ScrollReveal>
+          </div>
+        </div>
+      </section>
+
+      {/* ============================================================ */}
+      {/* WHAT WE ARE / WHAT WE ARE NOT — answers every owner-operator's */}
+      {/* first 30 seconds of questions. Critical for FMCSA-skeptical    */}
+      {/* truckers and helps with Google Ads policy (clear disclosure). */}
+      {/* ============================================================ */}
+      <section className="section-padding bg-white">
+        <div className="container-custom">
+          <ScrollReveal>
+            <div className="text-center max-w-2xl mx-auto mb-12">
+              <span className="inline-block px-4 py-1.5 bg-accent-100 text-accent-700 text-sm font-semibold rounded-full mb-4">
+                Straight Talk
+              </span>
+              <h2 className="font-display text-3xl md:text-4xl font-bold text-navy-950 mb-4">
+                What Rai Logistics Is (and Isn&apos;t)
+              </h2>
+              <p className="text-surface-600 text-lg">
+                Other dispatchers blur the lines. We don&apos;t. Here is exactly what
+                you are signing up for.
+              </p>
+            </div>
+          </ScrollReveal>
+
+          <div className="grid md:grid-cols-2 gap-6 max-w-5xl mx-auto">
+            {/* What we ARE */}
+            <ScrollReveal>
+              <div className="h-full rounded-3xl bg-gradient-to-br from-green-50 to-emerald-50 border border-green-200 p-8">
+                <div className="flex items-center gap-3 mb-6">
+                  <div className="w-12 h-12 bg-green-600 rounded-2xl flex items-center justify-center shadow-soft">
+                    <CheckCircle className="w-7 h-7 text-white" />
+                  </div>
+                  <h3 className="font-display text-2xl font-bold text-navy-950">
+                    What We <span className="text-green-700">Are</span>
+                  </h3>
+                </div>
+                <ul className="space-y-4">
+                  {SCOPE_CLARITY.weAre.map((item) => (
+                    <li key={item} className="flex items-start gap-3">
+                      <CheckCircle className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
+                      <span className="text-navy-800">{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </ScrollReveal>
+
+            {/* What we ARE NOT */}
+            <ScrollReveal delay={0.1}>
+              <div className="h-full rounded-3xl bg-gradient-to-br from-surface-50 to-white border border-surface-200 p-8">
+                <div className="flex items-center gap-3 mb-6">
+                  <div className="w-12 h-12 bg-navy-800 rounded-2xl flex items-center justify-center shadow-soft">
+                    <XCircle className="w-7 h-7 text-white" />
+                  </div>
+                  <h3 className="font-display text-2xl font-bold text-navy-950">
+                    What We <span className="text-navy-700">Are Not</span>
+                  </h3>
+                </div>
+                <ul className="space-y-4">
+                  {SCOPE_CLARITY.weArent.map((item) => (
+                    <li key={item} className="flex items-start gap-3">
+                      <XCircle className="w-5 h-5 text-navy-500 flex-shrink-0 mt-0.5" />
+                      <span className="text-navy-700">{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </ScrollReveal>
+          </div>
+        </div>
+      </section>
+
+      {/* ============================================================ */}
+      {/* COMPARISON TABLE — owner-operators shop 3-5 dispatchers       */}
+      {/* before choosing. Pre-empt the comparison they're going to do  */}
+      {/* anyway and frame it on Rai's strengths.                       */}
+      {/* ============================================================ */}
+      <section className="section-padding bg-surface-50">
+        <div className="container-custom">
+          <ScrollReveal>
+            <div className="text-center max-w-2xl mx-auto mb-12">
+              <span className="inline-block px-4 py-1.5 bg-primary-100 text-primary-700 text-sm font-semibold rounded-full mb-4">
+                Why Switch
+              </span>
+              <h2 className="font-display text-3xl md:text-4xl font-bold text-navy-950 mb-4">
+                Rai Logistics vs. The Average Dispatcher
+              </h2>
+              <p className="text-surface-600 text-lg">
+                If you are shopping around, here is exactly how we stack up.
+              </p>
+            </div>
+          </ScrollReveal>
+
+          <ScrollReveal>
+            <div className="max-w-4xl mx-auto bg-white rounded-3xl shadow-soft border border-surface-100 overflow-hidden">
+              {/* Header row */}
+              <div className="grid grid-cols-3 bg-gradient-to-r from-navy-950 to-navy-900 text-white">
+                <div className="px-4 py-4 sm:px-6 sm:py-5 font-semibold text-sm sm:text-base">
+                  Feature
+                </div>
+                <div className="px-4 py-4 sm:px-6 sm:py-5 font-bold text-sm sm:text-base text-center border-l border-white/10">
+                  <div className="inline-flex items-center gap-1.5">
+                    <Truck className="w-4 h-4" />
+                    Rai Logistics
+                  </div>
+                </div>
+                <div className="px-4 py-4 sm:px-6 sm:py-5 font-medium text-sm sm:text-base text-surface-400 text-center border-l border-white/10">
+                  Other Dispatchers
+                </div>
+              </div>
+
+              {/* Body */}
+              {COMPARISON_ROWS.map((row, idx) => (
+                <div
+                  key={row.feature}
+                  className={`grid grid-cols-3 ${
+                    idx % 2 === 0 ? 'bg-surface-50/50' : 'bg-white'
+                  } border-t border-surface-100`}
+                >
+                  <div className="px-4 py-4 sm:px-6 sm:py-4 text-navy-900 font-medium text-sm sm:text-base">
+                    {row.feature}
+                  </div>
+                  <div className="px-4 py-4 sm:px-6 sm:py-4 text-center border-l border-surface-100">
+                    <div className="inline-flex items-center gap-1.5 text-green-700 font-semibold text-sm sm:text-base">
+                      <CheckCircle className="w-4 h-4 flex-shrink-0" />
+                      <span>{row.us}</span>
+                    </div>
+                  </div>
+                  <div className="px-4 py-4 sm:px-6 sm:py-4 text-center border-l border-surface-100 text-surface-500 text-sm sm:text-base">
+                    {row.them}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </ScrollReveal>
+
+          <ScrollReveal className="text-center mt-10">
+            <motion.a
+              href={BUSINESS.phoneHref}
+              whileHover={{ scale: 1.03 }}
+              whileTap={{ scale: 0.98 }}
+              className="btn-primary inline-flex"
+            >
+              <Phone className="w-5 h-5" />
+              Call to Switch: {BUSINESS.phone}
+            </motion.a>
+          </ScrollReveal>
+        </div>
+      </section>
+
       {/* How It Works Section */}
       <section id="how-it-works" className="section-padding bg-gradient-to-br from-navy-950 to-navy-900 text-white">
         <div className="container-custom">
@@ -451,6 +718,67 @@ export default function HomePage() {
               View Full Pricing Details
               <ArrowRight className="w-4 h-4" />
             </Link>
+          </ScrollReveal>
+        </div>
+      </section>
+
+      {/* ============================================================ */}
+      {/* RISK-REVERSAL — addresses the #1 objection ("what if it       */}
+      {/* doesn't work out?") with a free-trial framing. Standard       */}
+      {/* dispatch industry play, but most sites bury it.               */}
+      {/* ============================================================ */}
+      <section className="section-padding bg-gradient-to-br from-primary-50 via-white to-accent-50">
+        <div className="container-custom">
+          <ScrollReveal>
+            <div className="max-w-4xl mx-auto rounded-3xl bg-white shadow-medium border border-surface-100 overflow-hidden">
+              <div className="grid md:grid-cols-2">
+                {/* Left: copy */}
+                <div className="p-8 md:p-10">
+                  <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-green-50 text-green-700 rounded-full text-xs font-semibold mb-4">
+                    <Sparkles className="w-3.5 h-3.5" />
+                    Zero-Pressure Offer
+                  </div>
+                  <h2 className="font-display text-3xl md:text-4xl font-bold text-navy-950 mb-3 leading-tight">
+                    {RISK_REVERSAL.headline}
+                  </h2>
+                  <p className="text-surface-600 text-lg mb-6">
+                    {RISK_REVERSAL.subheadline}
+                  </p>
+                  <ul className="space-y-3">
+                    {RISK_REVERSAL.bullets.map((bullet) => (
+                      <li key={bullet} className="flex items-start gap-3">
+                        <CheckCircle className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
+                        <span className="text-navy-800">{bullet}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+                {/* Right: CTA panel */}
+                <div className="bg-gradient-to-br from-primary-600 via-primary-700 to-primary-800 p-8 md:p-10 flex flex-col justify-center text-white">
+                  <p className="text-primary-200 text-sm font-semibold uppercase tracking-wider mb-2">
+                    Talk to Sam Today
+                  </p>
+                  <p className="font-display text-2xl font-bold mb-1">No setup fees.</p>
+                  <p className="font-display text-2xl font-bold mb-6">No surprises.</p>
+                  <motion.a
+                    href={BUSINESS.phoneHref}
+                    whileHover={{ scale: 1.03 }}
+                    whileTap={{ scale: 0.98 }}
+                    className="inline-flex items-center justify-center gap-2 px-6 py-4 bg-white text-primary-700 font-bold text-lg rounded-2xl shadow-strong mb-3"
+                  >
+                    <Phone className="w-5 h-5" />
+                    {BUSINESS.phone}
+                  </motion.a>
+                  <a
+                    href={BUSINESS.smsHref}
+                    className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-white/10 backdrop-blur text-white font-semibold rounded-xl border border-white/30 hover:bg-white/20 transition-all"
+                  >
+                    <MessageCircle className="w-5 h-5" />
+                    Or Text Us
+                  </a>
+                </div>
+              </div>
+            </div>
           </ScrollReveal>
         </div>
       </section>
@@ -622,13 +950,22 @@ export default function HomePage() {
                 <Phone className="w-6 h-6" />
                 {BUSINESS.phone}
               </motion.a>
+              <motion.a
+                href={BUSINESS.smsHref}
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                className="inline-flex items-center gap-2 px-8 py-5 bg-white/10 backdrop-blur text-white font-semibold rounded-2xl border-2 border-white/30 hover:bg-white/20 transition-all"
+              >
+                <MessageCircle className="w-5 h-5" />
+                Text Us
+              </motion.a>
               <motion.button
                 onClick={() => setIsQuoteModalOpen(true)}
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
                 className="inline-flex items-center gap-2 px-8 py-5 bg-white/10 backdrop-blur text-white font-semibold rounded-2xl border-2 border-white/30 hover:bg-white/20 transition-all"
               >
-                Request Callback
+                Get Quote
                 <ArrowRight className="w-5 h-5" />
               </motion.button>
             </div>

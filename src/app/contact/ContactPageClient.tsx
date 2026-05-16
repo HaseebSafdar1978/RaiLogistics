@@ -13,17 +13,23 @@ import {
   Shield,
   Zap,
   Users,
+  MessageCircle,
 } from 'lucide-react';
 import { ScrollReveal } from '@/components';
 import { BUSINESS, EQUIPMENT_TYPES } from '@/lib/constants';
 
 export default function ContactPageClient() {
+  // Form state — kept aligned with QuoteModal's onboarding-grade fields so leads
+  // captured here vs. the popup are interchangeable.
   const [formState, setFormState] = useState({
     name: '',
     phone: '',
     email: '',
+    mcNumber: '',
     equipment: '',
     lanes: '',
+    currentStatus: '',
+    factoring: '',
     message: '',
     requestCallback: false,
   });
@@ -34,7 +40,7 @@ export default function ContactPageClient() {
     e.preventDefault();
     setIsSubmitting(true);
 
-    // Simulate form submission
+    // NOTE: form submission is simulated. Wire to /api/lead or Resend when ready.
     await new Promise((resolve) => setTimeout(resolve, 1500));
 
     setIsSubmitting(false);
@@ -47,8 +53,11 @@ export default function ContactPageClient() {
       name: '',
       phone: '',
       email: '',
+      mcNumber: '',
       equipment: '',
       lanes: '',
+      currentStatus: '',
+      factoring: '',
       message: '',
       requestCallback: false,
     });
@@ -145,6 +154,24 @@ export default function ContactPageClient() {
                           {BUSINESS.phone}
                         </a>
                         <p className="text-sm text-surface-500 mt-1">Mon-Sat, 8am-6pm</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="bg-white rounded-2xl p-6 shadow-soft border border-surface-100">
+                    <div className="flex items-start gap-4">
+                      <div className="w-12 h-12 bg-primary-100 rounded-xl flex items-center justify-center flex-shrink-0">
+                        <MessageCircle className="w-6 h-6 text-primary-600" />
+                      </div>
+                      <div>
+                        <h3 className="font-semibold text-navy-900 mb-1">Text Us</h3>
+                        <a
+                          href={BUSINESS.smsHref}
+                          className="text-primary-600 font-medium hover:text-primary-700"
+                        >
+                          {BUSINESS.phone}
+                        </a>
+                        <p className="text-sm text-surface-500 mt-1">Quick replies, even on the road</p>
                       </div>
                     </div>
                   </div>
@@ -293,6 +320,20 @@ export default function ContactPageClient() {
                       <div className="grid sm:grid-cols-2 gap-6">
                         <div>
                           <label className="block text-sm font-medium text-navy-800 mb-2">
+                            MC Number
+                          </label>
+                          <input
+                            type="text"
+                            value={formState.mcNumber}
+                            onChange={(e) =>
+                              setFormState({ ...formState, mcNumber: e.target.value })
+                            }
+                            className="w-full px-4 py-3 bg-surface-50 border border-surface-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all"
+                            placeholder="MC-123456"
+                          />
+                        </div>
+                        <div>
+                          <label className="block text-sm font-medium text-navy-800 mb-2">
                             Equipment Type *
                           </label>
                           <select
@@ -311,20 +352,62 @@ export default function ContactPageClient() {
                             ))}
                           </select>
                         </div>
+                      </div>
+
+                      <div className="grid sm:grid-cols-2 gap-6">
                         <div>
                           <label className="block text-sm font-medium text-navy-800 mb-2">
-                            Preferred Lanes / States
+                            Current Status
                           </label>
-                          <input
-                            type="text"
-                            value={formState.lanes}
+                          <select
+                            value={formState.currentStatus}
                             onChange={(e) =>
-                              setFormState({ ...formState, lanes: e.target.value })
+                              setFormState({
+                                ...formState,
+                                currentStatus: e.target.value,
+                              })
                             }
-                            className="w-full px-4 py-3 bg-surface-50 border border-surface-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all"
-                            placeholder="e.g., TX to CA, Southeast"
-                          />
+                            className="w-full px-4 py-3 bg-surface-50 border border-surface-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all appearance-none"
+                          >
+                            <option value="">Select…</option>
+                            <option value="new-authority">New authority</option>
+                            <option value="switching">Switching dispatchers</option>
+                            <option value="self-dispatch">Self-dispatching now</option>
+                            <option value="exploring">Just exploring</option>
+                          </select>
                         </div>
+                        <div>
+                          <label className="block text-sm font-medium text-navy-800 mb-2">
+                            Factoring
+                          </label>
+                          <select
+                            value={formState.factoring}
+                            onChange={(e) =>
+                              setFormState({ ...formState, factoring: e.target.value })
+                            }
+                            className="w-full px-4 py-3 bg-surface-50 border border-surface-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all appearance-none"
+                          >
+                            <option value="">Select…</option>
+                            <option value="have-factoring">Have a factoring company</option>
+                            <option value="no-factoring">No factoring</option>
+                            <option value="need-help">Need help choosing</option>
+                          </select>
+                        </div>
+                      </div>
+
+                      <div>
+                        <label className="block text-sm font-medium text-navy-800 mb-2">
+                          Preferred Lanes / States
+                        </label>
+                        <input
+                          type="text"
+                          value={formState.lanes}
+                          onChange={(e) =>
+                            setFormState({ ...formState, lanes: e.target.value })
+                          }
+                          className="w-full px-4 py-3 bg-surface-50 border border-surface-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all"
+                          placeholder="e.g., TX to CA, Southeast"
+                        />
                       </div>
 
                       <div>
@@ -376,10 +459,17 @@ export default function ContactPageClient() {
                         </motion.button>
                         <a
                           href={BUSINESS.phoneHref}
-                          className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-surface-100 text-navy-800 font-semibold rounded-xl hover:bg-surface-200 transition-colors"
+                          className="inline-flex items-center justify-center gap-2 px-6 py-4 bg-surface-100 text-navy-800 font-semibold rounded-xl hover:bg-surface-200 transition-colors"
                         >
                           <Phone className="w-5 h-5" />
-                          Call Instead
+                          Call
+                        </a>
+                        <a
+                          href={BUSINESS.smsHref}
+                          className="inline-flex items-center justify-center gap-2 px-6 py-4 bg-surface-100 text-navy-800 font-semibold rounded-xl hover:bg-surface-200 transition-colors"
+                        >
+                          <MessageCircle className="w-5 h-5" />
+                          Text
                         </a>
                       </div>
                     </form>

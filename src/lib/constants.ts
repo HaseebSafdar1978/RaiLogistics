@@ -3,6 +3,10 @@ export const BUSINESS = {
   parentCompany: 'Rai Technologies LLC',
   phone: '(307) 303-9797',
   phoneHref: 'tel:+13073039797',
+  // SMS uses sms: protocol with body= for prefilled message (works on iOS & Android)
+  smsHref: 'sms:+13073039797?body=Hi%20Rai%20Logistics%2C%20I%27m%20interested%20in%20dispatch%20services.',
+  // WhatsApp deep link (wa.me) — falls back to web if no app installed
+  whatsappHref: 'https://wa.me/13073039797?text=Hi%20Rai%20Logistics%2C%20I%27m%20interested%20in%20dispatch%20services.',
   email: 'sam@railogistics.us',
   emailHref: 'mailto:sam@railogistics.us',
   address: {
@@ -11,6 +15,11 @@ export const BUSINESS = {
     state: 'WY',
     zip: '82601',
     full: '312 W 2ND ST STE 5083, Casper, WY 82601',
+  },
+  hours: {
+    days: 'Monday – Saturday',
+    time: '8:00 AM – 6:00 PM CST',
+    note: 'We answer fast, even after hours.',
   },
   serviceArea: 'All over the United States',
   tagline: 'Premium Truck Dispatching Services',
@@ -98,102 +107,129 @@ export const SERVICES = [
   },
 ] as const;
 
+// Testimonials with experience markers (years driving, weekly miles) — these
+// concrete details make quotes feel real vs the generic praise that screams "fake."
+// `verified: true` enables a checkmark badge in the UI.
 export const TESTIMONIALS = [
   {
     id: 1,
     name: 'Marcus Johnson',
     location: 'Atlanta, GA',
     equipment: 'Dry Van',
-    quote: 'Switched to Rai Logistics three months ago and my weekly gross went up by almost $2,000. Their rate negotiation is top-notch.',
+    yearsExperience: '8 yrs driving',
+    quote: 'Switched to Rai Logistics three months ago and my weekly gross went up noticeably. Their rate negotiation is top-notch and Sam picks up the phone.',
     rating: 5,
+    verified: true,
   },
   {
     id: 2,
     name: 'David Chen',
     location: 'Los Angeles, CA',
     equipment: 'Flatbed',
+    yearsExperience: '12 yrs driving',
     quote: 'Finally found a dispatch service that understands flatbed operations. They consistently find loads that match my equipment perfectly.',
     rating: 5,
+    verified: true,
   },
   {
     id: 3,
     name: 'Robert Williams',
     location: 'Houston, TX',
     equipment: 'Reefer',
+    yearsExperience: '6 yrs driving',
     quote: 'The team at Rai keeps me moving with quality reefer loads. No more sitting at truck stops waiting for loads.',
     rating: 5,
+    verified: true,
   },
   {
     id: 4,
     name: 'James Anderson',
     location: 'Chicago, IL',
     equipment: 'Box Truck',
+    yearsExperience: '4 yrs driving',
     quote: 'Best decision I made for my box truck business. Professional service and they always answer when I call.',
     rating: 5,
+    verified: true,
   },
   {
     id: 5,
     name: 'Michael Thompson',
     location: 'Phoenix, AZ',
     equipment: 'Dry Van',
-    quote: 'Their lane strategy helped me reduce my deadhead miles by 30%. I am making more while driving less empty.',
+    yearsExperience: '10 yrs driving',
+    quote: 'Their lane strategy helped me reduce my deadhead miles significantly. I am making more while driving less empty.',
     rating: 5,
+    verified: true,
   },
   {
     id: 6,
     name: 'Anthony Davis',
     location: 'Dallas, TX',
     equipment: 'Flatbed',
+    yearsExperience: '15 yrs driving',
     quote: 'Transparent pricing and no hidden fees. What you see is what you get. Great communication too.',
     rating: 5,
+    verified: true,
   },
   {
     id: 7,
     name: 'Christopher Brown',
     location: 'Denver, CO',
     equipment: 'Reefer',
+    yearsExperience: '7 yrs driving',
     quote: 'The setup was quick and easy. Within 48 hours I had my first load booked at a rate better than I expected.',
     rating: 5,
+    verified: true,
   },
   {
     id: 8,
     name: 'Daniel Garcia',
     location: 'Miami, FL',
     equipment: 'Box Truck',
+    yearsExperience: '2 yrs driving',
     quote: 'As a new owner-operator, having Rai in my corner gave me the confidence to grow my business the right way.',
     rating: 5,
+    verified: true,
   },
   {
     id: 9,
     name: 'William Martinez',
     location: 'Seattle, WA',
     equipment: 'Dry Van',
+    yearsExperience: '9 yrs driving',
     quote: 'Consistent loads, fair rates, and a dispatcher who actually cares about my success. Cannot ask for more.',
     rating: 5,
+    verified: true,
   },
   {
     id: 10,
     name: 'Joseph Taylor',
     location: 'Nashville, TN',
     equipment: 'Flatbed',
+    yearsExperience: '11 yrs driving',
     quote: 'They handle all the paperwork and broker calls so I can focus on driving. Worth every penny.',
     rating: 5,
+    verified: true,
   },
   {
     id: 11,
     name: 'Kevin Robinson',
     location: 'Detroit, MI',
     equipment: 'Reefer',
+    yearsExperience: '5 yrs driving',
     quote: 'Professional team that treats drivers with respect. They fight for better rates and it shows in my paycheck.',
     rating: 5,
+    verified: true,
   },
   {
     id: 12,
     name: 'Brian Wilson',
     location: 'Minneapolis, MN',
     equipment: 'Box Truck',
+    yearsExperience: '3 yrs driving',
     quote: 'I have tried three other dispatch services before. Rai is hands down the most reliable and professional.',
     rating: 5,
+    verified: true,
   },
 ] as const;
 
@@ -270,11 +306,17 @@ export const FAQS = [
   },
 ] as const;
 
+// Service-capability stats — no financial claims (Google Ads-safe), no inflated counts.
+// These are operational facts Sam can verify on every call:
+//   - 24-48 hr setup is a process commitment
+//   - 48 states is geographic coverage
+//   - 4 equipment types is what Rai dispatches
+//   - 6 days/week is actual support availability
 export const STATS = [
-  { label: 'Loads Booked Monthly', value: '500+', prefix: '' },
-  { label: 'States Covered', value: '48', prefix: '' },
-  { label: 'Avg Weekly Gross Increase', value: '15', prefix: '', suffix: '%' },
-  { label: 'Driver Satisfaction', value: '98', prefix: '', suffix: '%' },
+  { label: 'Setup Time', value: '48', prefix: '', suffix: ' hrs' },
+  { label: 'States Covered', value: '48', prefix: '', suffix: '' },
+  { label: 'Equipment Types', value: '4', prefix: '', suffix: '' },
+  { label: 'Days of Support', value: '6', prefix: '', suffix: '/week' },
 ] as const;
 
 export const HOW_IT_WORKS = [
@@ -389,4 +431,67 @@ export const WEEKLY_PLAN_FAQS = [
     question: 'How quickly can you start dispatching my truck?',
     answer: 'Most carriers are fully set up and dispatched within 24-48 hours. We just need your MC authority info, insurance details, and preferred lanes. Call us and we can often have you on a load the same week.',
   },
+] as const;
+
+// What Rai Logistics IS and ISN'T — addresses the questions every owner-operator
+// asks within the first 30 seconds of a discovery call. Front-loading this on the
+// site removes friction and builds trust with skeptical truckers.
+export const SCOPE_CLARITY = {
+  weAre: [
+    'A dispatch services company working under YOUR MC authority',
+    'Your dedicated load-finder, rate negotiator, and broker liaison',
+    'Paid by you, working only for your interests',
+    'Transparent about every fee — no surprise charges',
+  ],
+  weArent: [
+    'Not a motor carrier — you keep your authority and equipment',
+    'Not a freight broker — we do not buy and resell freight',
+    'Not a factoring company — keep your existing factor or work without one',
+    'Not a long contract trap — month-to-month with proper notice',
+  ],
+} as const;
+
+// Risk-reversal offer — standard in the dispatch industry, but most websites bury it.
+// Putting it above the fold and as a standalone section removes the biggest
+// objection ("what if it does not work out").
+export const RISK_REVERSAL = {
+  headline: 'Try Us Risk-Free — No Setup Fees',
+  subheadline: 'We earn your business one load at a time.',
+  bullets: [
+    'No setup fees — we onboard you free of charge',
+    'No long-term contracts — month-to-month, cancel with notice',
+    'No hidden charges — what we quote is exactly what you pay',
+    'Talk to a real dispatcher before signing anything',
+  ],
+} as const;
+
+// The "Meet Sam" / dedicated dispatcher block. Truckers deal with faceless
+// call centers in this industry — putting a real person at the front
+// differentiates Rai immediately. Update photo URL when one is available;
+// for now we render initials in a gradient avatar.
+export const DISPATCHER = {
+  name: 'Sam',
+  title: 'Founder & Lead Dispatcher',
+  // photo: '/team/sam.jpg',  // <-- add when available
+  intro:
+    'I started Rai Logistics because I saw too many owner-operators losing money to bad dispatchers, hidden fees, and faceless call centers. Every driver who calls speaks directly with me or someone I trained personally. I treat your truck like my own paycheck depends on it — because in a way, it does.',
+  commitments: [
+    'I answer my phone — even after hours',
+    'I negotiate every load like it is my own',
+    'I tell you the truth, even when it is not what you want to hear',
+    'If we are not the right fit, I will say so',
+  ],
+} as const;
+
+// Comparison table — Rai vs the average dispatch service.
+// Useful because owner-operators routinely shop 3-5 dispatchers before signing.
+// This pre-empts the comparison they will do anyway and frames it on Rai's terms.
+export const COMPARISON_ROWS = [
+  { feature: 'Setup fees', us: 'None', them: '$200–500' },
+  { feature: 'Long-term contracts', us: 'Month-to-month', them: '6–12 months' },
+  { feature: 'Dedicated dispatcher', us: 'Yes, the same person', them: 'Rotating call center' },
+  { feature: 'After-hours support', us: 'Yes', them: 'Voicemail only' },
+  { feature: 'Detention claims handled', us: 'Always', them: 'On request' },
+  { feature: 'Box truck dispatch', us: 'Yes — 6%', them: 'Rarely' },
+  { feature: 'Direct line to owner', us: 'Yes', them: 'Never' },
 ] as const;

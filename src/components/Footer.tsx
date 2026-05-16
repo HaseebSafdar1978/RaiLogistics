@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { motion } from 'framer-motion';
-import { Phone, Mail, MapPin, Truck, ArrowRight } from 'lucide-react';
+import { Phone, Mail, MapPin, Truck, ArrowRight, MessageCircle, Clock } from 'lucide-react';
 import { BUSINESS, NAVIGATION } from '@/lib/constants';
 
 const footerLinks = {
@@ -86,6 +86,13 @@ export default function Footer() {
                 {BUSINESS.phone}
               </a>
               <a
+                href={BUSINESS.smsHref}
+                className="flex items-center gap-3 text-surface-300 hover:text-white transition-colors"
+              >
+                <MessageCircle className="w-5 h-5 text-primary-400" />
+                Text us
+              </a>
+              <a
                 href={BUSINESS.emailHref}
                 className="flex items-center gap-3 text-surface-300 hover:text-white transition-colors"
               >
@@ -95,6 +102,14 @@ export default function Footer() {
               <div className="flex items-start gap-3 text-surface-300">
                 <MapPin className="w-5 h-5 text-primary-400 flex-shrink-0 mt-0.5" />
                 <span>{BUSINESS.address.full}</span>
+              </div>
+              <div className="flex items-start gap-3 text-surface-300">
+                <Clock className="w-5 h-5 text-primary-400 flex-shrink-0 mt-0.5" />
+                <span>
+                  {BUSINESS.hours.days}
+                  <br />
+                  <span className="text-surface-400 text-sm">{BUSINESS.hours.time}</span>
+                </span>
               </div>
             </div>
           </div>

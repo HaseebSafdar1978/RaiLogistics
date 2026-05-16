@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Phone, Send, Check, Loader2 } from 'lucide-react';
+import { X, Phone, Send, Check, Loader2, ShieldCheck } from 'lucide-react';
 import { BUSINESS, EQUIPMENT_TYPES } from '@/lib/constants';
 
 interface QuoteModalProps {
@@ -10,13 +10,28 @@ interface QuoteModalProps {
   onClose: () => void;
 }
 
+/**
+ * QuoteModal — onboarding-grade lead capture.
+ *
+ * Old version asked generic fields (name/email/phone/equipment).
+ * This version captures the data Sam actually needs before a discovery call:
+ *  - MC number (lets him pull FMCSA history before he calls back)
+ *  - Factoring company (avoids surprise mid-onboarding)
+ *  - Current dispatch status (new authority vs. switching from someone)
+ *
+ * These three fields qualify the lead AND make the first call feel like Sam
+ * already knows the carrier — which is the kind of detail that converts.
+ */
 export default function QuoteModal({ isOpen, onClose }: QuoteModalProps) {
   const [formState, setFormState] = useState({
     name: '',
     phone: '',
     email: '',
+    mcNumber: '',
     equipment: '',
     lanes: '',
+    currentStatus: '',
+    factoring: '',
     message: '',
     requestCallback: false,
   });
@@ -26,34 +41,40 @@ export default function QuoteModal({ isOpen, onClose }: QuoteModalProps) {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
-    
-    // Simulate form submission
-    await new Promise(resolve => setTimeout(resolve, 1500));
-    
+
+    // NOTE: form submission is currently simulated. Wire to /api/lead route
+    // (or your preferred email service like Resend) when ready.
+    await new Promise((resolve) => setTimeout(resolve, 1200));
+
     setIsSubmitting(false);
     setIsSubmitted(true);
-    
-    // Reset after showing success
+
+    // Auto-reset after success
     setTimeout(() => {
       setIsSubmitted(false);
       setFormState({
         name: '',
         phone: '',
         email: '',
+        mcNumber: '',
         equipment: '',
         lanes: '',
+        currentStatus: '',
+        factoring: '',
         message: '',
         requestCallback: false,
       });
       onClose();
-    }, 2500);
+    }, 2800);
   };
+
+  const inputCls =
+    'w-full px-4 py-2.5 bg-surface-50 border border-surface-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all';
 
   return (
     <AnimatePresence>
       {isOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-          {/* Backdrop */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -62,30 +83,31 @@ export default function QuoteModal({ isOpen, onClose }: QuoteModalProps) {
             className="absolute inset-0 bg-navy-950/60 backdrop-blur-sm"
           />
 
-          {/* Modal */}
           <motion.div
             initial={{ opacity: 0, scale: 0.95, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: 20 }}
-            className="relative w-full max-w-lg bg-white rounded-3xl shadow-strong overflow-hidden"
+            className="relative w-full max-w-lg bg-white rounded-3xl shadow-strong overflow-hidden max-h-[90vh] overflow-y-auto"
           >
             {/* Header */}
-            <div className="bg-gradient-to-r from-primary-600 to-primary-700 px-6 py-5">
+            <div className="bg-gradient-to-r from-primary-600 to-primary-700 px-6 py-5 sticky top-0 z-10">
               <div className="flex items-center justify-between">
                 <div>
-                  <h2 className="text-xl font-display font-bold text-white">Get a Quote</h2>
-                  <p className="text-primary-200 text-sm mt-1">We respond within hours</p>
+                  <h2 className="text-xl font-display font-bold text-white">Get a Free Quote</h2>
+                  <p className="text-primary-200 text-sm mt-1">
+                    No setup fees · Response within hours
+                  </p>
                 </div>
                 <button
                   onClick={onClose}
                   className="p-2 rounded-full hover:bg-white/10 transition-colors"
+                  aria-label="Close"
                 >
                   <X className="w-5 h-5 text-white" />
                 </button>
               </div>
             </div>
 
-            {/* Content */}
             <div className="p-6">
               {isSubmitted ? (
                 <motion.div
@@ -100,15 +122,22 @@ export default function QuoteModal({ isOpen, onClose }: QuoteModalProps) {
                     Request Received!
                   </h3>
                   <p className="text-surface-600">
-                    We will contact you shortly. For immediate assistance, call us at{' '}
+                    Sam will call you back shortly. For immediate help, dial{' '}
                     <a href={BUSINESS.phoneHref} className="text-primary-600 font-semibold">
                       {BUSINESS.phone}
                     </a>
+                    .
                   </p>
                 </motion.div>
               ) : (
                 <form onSubmit={handleSubmit} className="space-y-4">
-                  <div className="grid grid-cols-2 gap-4">
+                  {/* Trust strip */}
+                  <div className="flex items-center gap-2 px-3 py-2 bg-green-50 text-green-800 rounded-lg text-sm">
+                    <ShieldCheck className="w-4 h-4 flex-shrink-0" />
+                    <span>Your info stays private. We never sell or share it.</span>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-3">
                     <div>
                       <label className="block text-sm font-medium text-navy-800 mb-1.5">
                         Your Name *
@@ -118,37 +147,53 @@ export default function QuoteModal({ isOpen, onClose }: QuoteModalProps) {
                         required
                         value={formState.name}
                         onChange={(e) => setFormState({ ...formState, name: e.target.value })}
-                        className="w-full px-4 py-2.5 bg-surface-50 border border-surface-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all"
+                        className={inputCls}
                         placeholder="John Smith"
                       />
                     </div>
                     <div>
                       <label className="block text-sm font-medium text-navy-800 mb-1.5">
-                        Phone Number *
+                        Phone *
                       </label>
                       <input
                         type="tel"
                         required
                         value={formState.phone}
                         onChange={(e) => setFormState({ ...formState, phone: e.target.value })}
-                        className="w-full px-4 py-2.5 bg-surface-50 border border-surface-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all"
+                        className={inputCls}
                         placeholder="(555) 555-5555"
                       />
                     </div>
                   </div>
 
-                  <div>
-                    <label className="block text-sm font-medium text-navy-800 mb-1.5">
-                      Email Address *
-                    </label>
-                    <input
-                      type="email"
-                      required
-                      value={formState.email}
-                      onChange={(e) => setFormState({ ...formState, email: e.target.value })}
-                      className="w-full px-4 py-2.5 bg-surface-50 border border-surface-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all"
-                      placeholder="john@example.com"
-                    />
+                  <div className="grid grid-cols-2 gap-3">
+                    <div>
+                      <label className="block text-sm font-medium text-navy-800 mb-1.5">
+                        Email *
+                      </label>
+                      <input
+                        type="email"
+                        required
+                        value={formState.email}
+                        onChange={(e) => setFormState({ ...formState, email: e.target.value })}
+                        className={inputCls}
+                        placeholder="john@example.com"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-navy-800 mb-1.5">
+                        MC Number
+                      </label>
+                      <input
+                        type="text"
+                        value={formState.mcNumber}
+                        onChange={(e) =>
+                          setFormState({ ...formState, mcNumber: e.target.value })
+                        }
+                        className={inputCls}
+                        placeholder="MC-123456"
+                      />
+                    </div>
                   </div>
 
                   <div>
@@ -159,7 +204,7 @@ export default function QuoteModal({ isOpen, onClose }: QuoteModalProps) {
                       required
                       value={formState.equipment}
                       onChange={(e) => setFormState({ ...formState, equipment: e.target.value })}
-                      className="w-full px-4 py-2.5 bg-surface-50 border border-surface-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all appearance-none"
+                      className={inputCls + ' appearance-none'}
                     >
                       <option value="">Select equipment type</option>
                       {EQUIPMENT_TYPES.map((eq) => (
@@ -170,6 +215,44 @@ export default function QuoteModal({ isOpen, onClose }: QuoteModalProps) {
                     </select>
                   </div>
 
+                  <div className="grid grid-cols-2 gap-3">
+                    <div>
+                      <label className="block text-sm font-medium text-navy-800 mb-1.5">
+                        Current Status
+                      </label>
+                      <select
+                        value={formState.currentStatus}
+                        onChange={(e) =>
+                          setFormState({ ...formState, currentStatus: e.target.value })
+                        }
+                        className={inputCls + ' appearance-none'}
+                      >
+                        <option value="">Select…</option>
+                        <option value="new-authority">New authority</option>
+                        <option value="switching">Switching dispatchers</option>
+                        <option value="self-dispatch">Self-dispatching now</option>
+                        <option value="exploring">Just exploring</option>
+                      </select>
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-navy-800 mb-1.5">
+                        Factoring
+                      </label>
+                      <select
+                        value={formState.factoring}
+                        onChange={(e) =>
+                          setFormState({ ...formState, factoring: e.target.value })
+                        }
+                        className={inputCls + ' appearance-none'}
+                      >
+                        <option value="">Select…</option>
+                        <option value="have-factoring">Have a factoring company</option>
+                        <option value="no-factoring">No factoring</option>
+                        <option value="need-help">Need help choosing</option>
+                      </select>
+                    </div>
+                  </div>
+
                   <div>
                     <label className="block text-sm font-medium text-navy-800 mb-1.5">
                       Preferred Lanes / States
@@ -178,21 +261,21 @@ export default function QuoteModal({ isOpen, onClose }: QuoteModalProps) {
                       type="text"
                       value={formState.lanes}
                       onChange={(e) => setFormState({ ...formState, lanes: e.target.value })}
-                      className="w-full px-4 py-2.5 bg-surface-50 border border-surface-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all"
+                      className={inputCls}
                       placeholder="e.g., TX to CA, Southeast region"
                     />
                   </div>
 
                   <div>
                     <label className="block text-sm font-medium text-navy-800 mb-1.5">
-                      Message (Optional)
+                      Anything else? (Optional)
                     </label>
                     <textarea
                       value={formState.message}
                       onChange={(e) => setFormState({ ...formState, message: e.target.value })}
-                      rows={3}
-                      className="w-full px-4 py-2.5 bg-surface-50 border border-surface-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all resize-none"
-                      placeholder="Tell us about your trucking business..."
+                      rows={2}
+                      className={inputCls + ' resize-none'}
+                      placeholder="Specific goals, concerns, or questions…"
                     />
                   </div>
 
@@ -206,7 +289,7 @@ export default function QuoteModal({ isOpen, onClose }: QuoteModalProps) {
                       className="w-5 h-5 rounded border-surface-300 text-primary-600 focus:ring-primary-500"
                     />
                     <span className="text-sm text-navy-700">
-                      Request a callback (we will call you)
+                      I would prefer a callback over email
                     </span>
                   </label>
 
@@ -223,7 +306,7 @@ export default function QuoteModal({ isOpen, onClose }: QuoteModalProps) {
                       ) : (
                         <Send className="w-5 h-5" />
                       )}
-                      {isSubmitting ? 'Sending...' : 'Submit Request'}
+                      {isSubmitting ? 'Sending…' : 'Send Request'}
                     </motion.button>
                     <a
                       href={BUSINESS.phoneHref}

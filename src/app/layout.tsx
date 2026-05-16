@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import { Header, Footer, StickyCallWidgets } from '@/components';
-import { BUSINESS } from '@/lib/constants';
+import { BUSINESS, FAQS, SERVICES } from '@/lib/constants';
 import './globals.css';
 
 export const metadata: Metadata = {
@@ -58,37 +58,113 @@ export const metadata: Metadata = {
   },
 };
 
-// JSON-LD Structured Data
+/* ---------------------------------------------------------------------------
+   Structured data (JSON-LD).
+   We ship FOUR schemas to maximize SERP eligibility:
+     1. LocalBusiness — primary business identity, NAP, hours, area served
+     2. Organization — parent company + sameAs links
+     3. Service       — explicit list of dispatch services we offer
+     4. FAQPage       — pulls FAQS so Google can render rich FAQ snippets
+   All published as one @graph object — recommended by Google for sites that
+   want multiple schema types on the same page.
+--------------------------------------------------------------------------- */
 const jsonLd = {
   '@context': 'https://schema.org',
-  '@type': 'LocalBusiness',
-  name: BUSINESS.name,
-  description: BUSINESS.description,
-  telephone: BUSINESS.phone,
-  email: BUSINESS.email,
-  address: {
-    '@type': 'PostalAddress',
-    streetAddress: BUSINESS.address.street,
-    addressLocality: BUSINESS.address.city,
-    addressRegion: BUSINESS.address.state,
-    postalCode: BUSINESS.address.zip,
-    addressCountry: 'US',
-  },
-  areaServed: {
-    '@type': 'Country',
-    name: 'United States',
-  },
-  parentOrganization: {
-    '@type': 'Organization',
-    name: BUSINESS.parentCompany,
-  },
-  serviceType: [
-    'Truck Dispatch Services',
-    'Load Booking',
-    'Rate Negotiation',
-    'Freight Dispatch',
+  '@graph': [
+    {
+      '@type': 'LocalBusiness',
+      '@id': 'https://railogistics.us/#business',
+      name: BUSINESS.name,
+      description: BUSINESS.description,
+      telephone: BUSINESS.phone,
+      email: BUSINESS.email,
+      url: 'https://railogistics.us',
+      image: 'https://railogistics.us/icon-512.png',
+      logo: 'https://railogistics.us/icon-512.png',
+      priceRange: '$$',
+      address: {
+        '@type': 'PostalAddress',
+        streetAddress: BUSINESS.address.street,
+        addressLocality: BUSINESS.address.city,
+        addressRegion: BUSINESS.address.state,
+        postalCode: BUSINESS.address.zip,
+        addressCountry: 'US',
+      },
+      areaServed: {
+        '@type': 'Country',
+        name: 'United States',
+      },
+      openingHoursSpecification: [
+        {
+          '@type': 'OpeningHoursSpecification',
+          dayOfWeek: [
+            'Monday',
+            'Tuesday',
+            'Wednesday',
+            'Thursday',
+            'Friday',
+            'Saturday',
+          ],
+          opens: '08:00',
+          closes: '18:00',
+        },
+      ],
+      parentOrganization: {
+        '@type': 'Organization',
+        name: BUSINESS.parentCompany,
+      },
+    },
+    {
+      '@type': 'Organization',
+      '@id': 'https://railogistics.us/#org',
+      name: BUSINESS.name,
+      legalName: BUSINESS.parentCompany,
+      url: 'https://railogistics.us',
+      logo: 'https://railogistics.us/icon-512.png',
+      contactPoint: {
+        '@type': 'ContactPoint',
+        telephone: BUSINESS.phone,
+        email: BUSINESS.email,
+        contactType: 'customer service',
+        areaServed: 'US',
+        availableLanguage: 'en',
+      },
+    },
+    {
+      '@type': 'Service',
+      '@id': 'https://railogistics.us/#service',
+      serviceType: 'Truck Dispatch Services',
+      provider: { '@id': 'https://railogistics.us/#business' },
+      areaServed: {
+        '@type': 'Country',
+        name: 'United States',
+      },
+      description: BUSINESS.description,
+      hasOfferCatalog: {
+        '@type': 'OfferCatalog',
+        name: 'Dispatch Services',
+        itemListElement: SERVICES.map((s) => ({
+          '@type': 'Offer',
+          itemOffered: {
+            '@type': 'Service',
+            name: s.title,
+            description: s.description,
+          },
+        })),
+      },
+    },
+    {
+      '@type': 'FAQPage',
+      mainEntity: FAQS.slice(0, 8).map((faq) => ({
+        '@type': 'Question',
+        name: faq.question,
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: faq.answer,
+        },
+      })),
+    },
   ],
-  priceRange: '$$',
 };
 
 export default function RootLayout({
