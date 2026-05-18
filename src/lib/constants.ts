@@ -1,20 +1,20 @@
 export const BUSINESS = {
   name: 'Rai Logistics',
   parentCompany: 'Rai Technologies LLC',
-  phone: '(307) 303-9797',
-  phoneHref: 'tel:+13073039797',
+  phone: '(213) 394-8144',
+  phoneHref: 'tel:+12133948144',
   // SMS uses sms: protocol with body= for prefilled message (works on iOS & Android)
-  smsHref: 'sms:+13073039797?body=Hi%20Rai%20Logistics%2C%20I%27m%20interested%20in%20dispatch%20services.',
+  smsHref: 'sms:+12133948144?body=Hi%20Rai%20Logistics%2C%20I%27m%20interested%20in%20dispatch%20services.',
   // WhatsApp deep link (wa.me) — falls back to web if no app installed
-  whatsappHref: 'https://wa.me/13073039797?text=Hi%20Rai%20Logistics%2C%20I%27m%20interested%20in%20dispatch%20services.',
+  whatsappHref: 'https://wa.me/12133948144?text=Hi%20Rai%20Logistics%2C%20I%27m%20interested%20in%20dispatch%20services.',
   email: 'sam@railogistics.us',
   emailHref: 'mailto:sam@railogistics.us',
   address: {
-    street: '312 W 2ND ST STE 5083',
+    street: '312 W 2nd St, Ste 5083',
     city: 'Casper',
     state: 'WY',
     zip: '82601',
-    full: '312 W 2ND ST STE 5083, Casper, WY 82601',
+    full: '312 W 2nd St, Ste 5083, Casper, WY 82601',
   },
   hours: {
     days: 'Monday – Saturday',
